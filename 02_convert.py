@@ -49,7 +49,8 @@ def main():
             for i in range(1, len(page_content) - 1):
                 one_content += list(map(str.strip, page_content[i].get_text().split('\n')))
                 d = '\n'.join(one_content)
-            content.append(one_content)
+                d2 = ' '.join(one_content)
+            content.append(d2)
 
         with open(clean_root / genre /name_file, 'w', encoding='utf-8') as dst:
             c = d
