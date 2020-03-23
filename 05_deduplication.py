@@ -52,21 +52,33 @@ def main():
     normalized_copus: List[List[str]] = [normalize(news) for news in raw_corpus]
 
     print('Составляем индекс для поиска дублей')
+    dst = open('duplicate.txt', 'w', encoding='utf-8')
+    
     lsh = MinHashLSH(num_perm=HASH_PERMUTATIONS_COUNT)
     deduplicated_corpus = []
     for i, (file, words) in enumerate(zip(list_files, normalized_copus)):
         words_hash = to_minhash(words)
         duplicates = lsh.query(words_hash)
         if duplicates:
-            print(f'Найдены совпадения для ({file}): {raw_corpus[i]}')
+            print(f'Найдены совпадения для ({file}): {raw_corpus[i]}', file=dst)
             for idx in duplicates:
-                print(f'\t{list_files[idx]}. {raw_corpus[idx]}')
+                print(f'\t{list_files[idx]}. {raw_corpus[idx]}', file=dst)
+            print('\n\n\n\n', file=dst)
         else:
             lsh.insert(i, words_hash)
             deduplicated_corpus.append((raw_corpus[i], list_files[i]))
-    print('Удалено дублей:', len(raw_corpus) - len(deduplicated_corpus))
+    print('Удалено дублей:', len(raw_corpus) - len(deduplicated_corpus), file=dst)
 
     print(f'Сохраняем дедуплицированный корпус ({len(deduplicated_corpus)} новостей)')
+    
+    # Создаем пустые папки
+    all_genre = ['Политика', 'В мире', 'Экономика', 'Общество', 'Происшествия',
+                 'Армия', 'Наука', 'Культура', 'Религия', 'Спорт', 'Туризм']
+    import os
+    for genre in all_genre:
+        newpath = 'corpus/super clean/' + genre
+        if not os.path.exists(newpath):
+            os.makedirs(newpath)
     
     # Сохраняем корпус
     for text, name in deduplicated_corpus:
