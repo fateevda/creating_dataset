@@ -14,7 +14,7 @@ def main() -> None:
     with open(corpus_root /'clean' / 'data.txt', 'r', encoding='utf-8') as src:
         news = [line.rstrip('\r\n') for line in src]
     # Считаем статистику
-    with open(corpus_root / 'statistics.txt', 'w', encoding='utf-8') as dst:
+    with open('statistics.txt', 'w', encoding='utf-8') as dst:
         print('Всего новостей:', len(news), file=dst)
 
         words: List[str] = [w.lower().strip('.,') for p in news for w in p.split()]
