@@ -15,5 +15,5 @@
 
 ### Baseline
 Our categories: ['Наука', 'Экономика', 'Общество', 'Происшествия']  
-Size of train: 380; Size of test 96  
+Size of train: 380; Size of test: 96  
 We have 4 categories. Accuracy: 0.8333333333333334
